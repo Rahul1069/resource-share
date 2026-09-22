@@ -1,0 +1,399 @@
+/* ========================================
+   ResourceShare - Categories Page
+   ======================================== */
+
+.categories-page {
+  min-height: calc(100vh - 80px);
+  background: #f5f7fa;
+  padding: 60px 20px 80px;
+}
+
+.categories-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   Page Header
+   ======================================== */
+
+.categories-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 50px;
+}
+
+.page-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.categories-header h1 {
+  margin: 0 0 16px;
+  color: #0f172a;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.categories-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   Categories Grid
+   ======================================== */
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* ========================================
+   Category Card
+   ======================================== */
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  border-color: #bfdbfe;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.12);
+}
+
+/* ========================================
+   Category Icon
+   ======================================== */
+
+.category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+  margin-bottom: 22px;
+
+  background: #eff6ff;
+  border-radius: 14px;
+
+  color: #2563eb;
+  font-size: 27px;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.category-card:hover .category-icon {
+  background: #dbeafe;
+  transform: scale(1.05);
+}
+
+/* ========================================
+   Category Content
+   ======================================== */
+
+.category-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.category-content h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.category-content p {
+  margin: 0 0 22px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   View Resources Link
+   ======================================== */
+
+.category-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  width: fit-content;
+  margin-top: auto;
+
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    gap 0.2s ease;
+}
+
+.category-link span {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.category-link:hover {
+  color: #1d4ed8;
+  gap: 11px;
+}
+
+.category-link:hover span {
+  transform: translateX(3px);
+}
+
+/* ========================================
+   Loading State
+   ======================================== */
+
+.categories-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+  color: #64748b;
+}
+
+.categories-loading p {
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+.loading-spinner {
+  width: 42px;
+  height: 42px;
+
+  border: 4px solid #dbeafe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+
+  animation: categories-spin 0.8s linear infinite;
+}
+
+@keyframes categories-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   Error State
+   ======================================== */
+
+.categories-error {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  padding: 20px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  text-align: center;
+}
+
+.categories-error p {
+  margin: 0 0 15px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.categories-error button {
+  padding: 10px 20px;
+
+  background: #2563eb;
+  border: none;
+  border-radius: 8px;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.categories-error button:hover {
+  background: #1d4ed8;
+}
+
+/* ========================================
+   Empty State
+   ======================================== */
+
+.categories-empty {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 55px 30px;
+
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+}
+
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+
+  background: #eff6ff;
+  border-radius: 50%;
+
+  font-size: 30px;
+}
+
+.categories-empty h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 22px;
+}
+
+.categories-empty p {
+  max-width: 500px;
+  margin: 0 auto;
+
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   Tablet
+   ======================================== */
+
+@media (max-width: 992px) {
+  .categories-page {
+    padding: 50px 20px 70px;
+  }
+
+  .categories-header h1 {
+    font-size: 36px;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .category-card {
+    min-height: 270px;
+  }
+}
+
+/* ========================================
+   Mobile
+   ======================================== */
+
+@media (max-width: 640px) {
+  .categories-page {
+    padding: 40px 16px 60px;
+  }
+
+  .categories-header {
+    margin-bottom: 35px;
+  }
+
+  .page-label {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+
+  .categories-header h1 {
+    font-size: 30px;
+    margin-bottom: 12px;
+  }
+
+  .categories-header p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .category-card {
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .category-icon {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 18px;
+    font-size: 24px;
+  }
+
+  .category-content h2 {
+    font-size: 19px;
+  }
+
+  .category-content p {
+    font-size: 14px;
+  }
+
+  .categories-empty {
+    padding: 40px 20px;
+  }
+}
+
+/* ========================================
+   Small Mobile
+   ======================================== */
+
+@media (max-width: 400px) {
+  .categories-page {
+    padding: 30px 12px 50px;
+  }
+
+  .categories-header h1 {
+    font-size: 27px;
+  }
+
+  .category-card {
+    padding: 20px;
+  }
+}

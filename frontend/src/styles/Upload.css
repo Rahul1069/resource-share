@@ -1,0 +1,828 @@
+/* ========================================
+   ResourceShare
+   Upload + Edit Resource
+======================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   Page
+======================================== */
+
+.upload-page {
+  min-height: 100vh;
+  width: 100%;
+  background: #f5f7fa;
+  padding: 50px 20px 70px;
+  font-family: "Poppins", "Inter", Arial, sans-serif;
+  color: #0f172a;
+}
+
+.upload-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   Header
+======================================== */
+
+.upload-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.upload-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.upload-header p {
+  max-width: 650px;
+  margin: 12px auto 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Supports EditResource label */
+
+.upload-label {
+  display: inline-block;
+  margin-bottom: 9px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+/* ========================================
+   Upload Form
+======================================== */
+
+.upload-form {
+  width: 100%;
+  background: #ffffff;
+  padding: 35px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* EditResource uses upload-card */
+
+.upload-card {
+  width: 100%;
+  background: #ffffff;
+  padding: 35px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* ========================================
+   Form Groups
+   Supports:
+   .form-group
+   .upload-group
+======================================== */
+
+.form-group,
+.upload-group {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.form-group label,
+.upload-group label {
+  display: block;
+  margin-bottom: 9px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ========================================
+   Text Input
+======================================== */
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.upload-group input[type="text"],
+.upload-group input[type="email"],
+.upload-group input[type="password"] {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input[type="text"]::placeholder,
+.upload-group input[type="text"]::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input[type="text"]:focus,
+.upload-group input[type="text"]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ========================================
+   Textarea
+======================================== */
+
+.form-group textarea,
+.upload-group textarea {
+  width: 100%;
+  min-height: 130px;
+
+  padding: 13px 14px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+
+  outline: none;
+  resize: vertical;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group textarea::placeholder,
+.upload-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+.form-group textarea:focus,
+.upload-group textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ========================================
+   Select
+======================================== */
+
+.form-group select,
+.upload-group select {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group select:focus,
+.upload-group select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group select:disabled,
+.upload-group select:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   File Input
+======================================== */
+
+.form-group input[type="file"],
+.upload-group input[type="file"] {
+  width: 100%;
+
+  padding: 13px;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+
+  background: #f8fafc;
+
+  color: #475569;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input[type="file"]:hover,
+.upload-group input[type="file"]:hover {
+  border-color: #2563eb;
+  background: #f8fbff;
+}
+
+/* Choose file button */
+
+.form-group input[type="file"]::file-selector-button,
+.upload-group input[type="file"]::file-selector-button {
+  margin-right: 12px;
+
+  padding: 9px 14px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.form-group input[type="file"]::file-selector-button:hover,
+.upload-group input[type="file"]::file-selector-button:hover {
+  background: #1d4ed8;
+}
+
+/* ========================================
+   File Name
+======================================== */
+
+.file-name {
+  margin: 9px 0 0;
+
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 500;
+
+  word-break: break-word;
+}
+
+/* ========================================
+   Help Text
+======================================== */
+
+.form-help {
+  margin: 9px 0 0;
+
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   Messages
+======================================== */
+
+.upload-message {
+  width: 100%;
+
+  padding: 13px 15px;
+  margin-bottom: 22px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.upload-error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.upload-success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+/* ========================================
+   Upload Button
+   Upload.jsx
+======================================== */
+
+.upload-submit-btn {
+  width: 100%;
+  height: 48px;
+
+  margin-top: 5px;
+
+  border: 1px solid #2563eb;
+  border-radius: 10px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.upload-submit-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+.upload-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Edit Resource Buttons
+======================================== */
+
+.upload-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 30px;
+  padding-top: 25px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+.upload-cancel,
+.upload-submit {
+  min-width: 130px;
+  height: 46px;
+
+  padding: 0 20px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Cancel */
+
+.upload-cancel {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+}
+
+.upload-cancel:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* Save */
+
+.upload-submit {
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.upload-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+
+.upload-cancel:disabled,
+.upload-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Current File
+   EditResource.jsx
+======================================== */
+
+.current-file {
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 15px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.current-file > span {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eff6ff;
+
+  border-radius: 10px;
+
+  font-size: 20px;
+}
+
+.current-file strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #0f172a;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.current-file a {
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  text-decoration: none;
+}
+
+.current-file a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* ========================================
+   File Box
+   EditResource.jsx
+======================================== */
+
+.file-box {
+  width: 100%;
+
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.file-box:hover {
+  border-color: #2563eb;
+  background: #f8fbff;
+}
+
+.file-box input[type="file"] {
+  width: 100%;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  color: #475569;
+
+  cursor: pointer;
+}
+
+.file-box input[type="file"]::file-selector-button {
+  margin-right: 12px;
+
+  padding: 9px 14px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.file-box input[type="file"]::file-selector-button:hover {
+  background: #1d4ed8;
+}
+
+.file-box p {
+  margin: 10px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+/* ========================================
+   Current Thumbnail
+   EditResource.jsx
+======================================== */
+
+.current-thumbnail {
+  width: 150px;
+  height: 110px;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.current-thumbnail img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.current-thumbnail > div {
+  color: #64748b;
+  font-size: 32px;
+}
+
+/* ========================================
+   Loading
+======================================== */
+
+.upload-loading {
+  min-height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #64748b;
+
+  font-size: 15px;
+}
+
+/* ========================================
+   Edit Resource Error Page
+======================================== */
+
+.upload-card .upload-actions {
+  margin-top: 20px;
+}
+
+/* ========================================
+   Tablet
+======================================== */
+
+@media (max-width: 768px) {
+  .upload-page {
+    padding: 35px 16px 50px;
+  }
+
+  .upload-header h1 {
+    font-size: 30px;
+  }
+
+  .upload-header p {
+    font-size: 14px;
+  }
+
+  .upload-form,
+  .upload-card {
+    padding: 26px;
+  }
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 480px) {
+  .upload-page {
+    padding: 25px 12px 40px;
+  }
+
+  .upload-header {
+    margin-bottom: 22px;
+  }
+
+  .upload-header h1 {
+    font-size: 25px;
+  }
+
+  .upload-header p {
+    margin-top: 9px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .upload-label {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+  }
+
+  .upload-form,
+  .upload-card {
+    padding: 20px 16px;
+
+    border-radius: 14px;
+  }
+
+  .form-group,
+  .upload-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label,
+  .upload-group label {
+    font-size: 13px;
+  }
+
+  .form-group input[type="text"],
+  .upload-group input[type="text"],
+  .form-group select,
+  .upload-group select {
+    height: 46px;
+    font-size: 13px;
+  }
+
+  .form-group textarea,
+  .upload-group textarea {
+    min-height: 110px;
+    font-size: 13px;
+  }
+
+  .form-group input[type="file"],
+  .upload-group input[type="file"] {
+    padding: 11px;
+    font-size: 12px;
+  }
+
+  .form-group input[type="file"]::file-selector-button,
+  .upload-group input[type="file"]::file-selector-button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .upload-submit-btn {
+    height: 46px;
+    font-size: 13px;
+  }
+
+  /* Edit buttons */
+
+  .upload-actions {
+    flex-direction: column-reverse;
+
+    gap: 10px;
+
+    margin-top: 25px;
+    padding-top: 20px;
+  }
+
+  .upload-cancel,
+  .upload-submit {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Current file */
+
+  .current-file {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .current-file > span {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .current-file strong {
+    font-size: 13px;
+  }
+
+  .current-file a {
+    font-size: 12px;
+  }
+
+  /* Thumbnail */
+
+  .current-thumbnail {
+    width: 120px;
+    height: 90px;
+  }
+
+  /* File box */
+
+  .file-box {
+    padding: 14px;
+  }
+
+  .file-box input[type="file"] {
+    font-size: 12px;
+  }
+
+  .file-box input[type="file"]::file-selector-button {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .file-box p {
+    font-size: 12px;
+  }
+
+  /* Messages */
+
+  .upload-message {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+}

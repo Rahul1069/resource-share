@@ -1,0 +1,669 @@
+/* ========================================
+   PROFILE PAGE
+======================================== */
+
+.profile-page {
+  min-height: calc(100vh - 80px);
+  background: var(--section-background);
+  padding: 50px 20px 70px;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+
+/* ========================================
+   PROFILE CARD
+======================================== */
+
+.profile-card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+
+/* Profile Information */
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  min-width: 100px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  background: var(--primary-light);
+  border: 3px solid var(--primary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--primary);
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-details h1 {
+  margin: 0 0 7px;
+
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.profile-details p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+
+/* ========================================
+   EDIT PROFILE BUTTON
+   INSIDE PROFILE CARD
+======================================== */
+
+.profile-card-actions {
+  flex-shrink: 0;
+}
+
+.edit-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+  padding: 0 20px;
+
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+
+  background: var(--background);
+  color: var(--primary);
+
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+.edit-profile-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+
+/* ========================================
+   UPLOAD RESOURCE
+   OUTSIDE PROFILE CARD
+======================================== */
+
+.upload-resource-section {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 20px;
+}
+
+.upload-resource-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: var(--primary);
+  color: #ffffff;
+
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+.upload-resource-btn span {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.upload-resource-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+
+/* ========================================
+   ERROR
+======================================== */
+
+.profile-error {
+  margin-top: 20px;
+  padding: 13px 16px;
+
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+
+  background: #fef2f2;
+  color: #dc2626;
+
+  font-size: 14px;
+}
+
+
+/* ========================================
+   MY RESOURCES
+======================================== */
+
+.my-resources {
+  margin-top: 45px;
+}
+
+.my-resources-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+.my-resources-header h2 {
+  margin: 0 0 5px;
+
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.my-resources-header p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.resource-count {
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  background: var(--primary-light);
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+/* ========================================
+   RESOURCES GRID
+======================================== */
+
+.my-resources-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+
+/* ========================================
+   RESOURCE CARD
+======================================== */
+
+.my-resource-card {
+  overflow: hidden;
+
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.my-resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ========================================
+   RESOURCE THUMBNAIL
+======================================== */
+
+.my-resource-thumbnail {
+  width: 100%;
+  height: 170px;
+
+  overflow: hidden;
+  background: var(--section-background);
+}
+
+.my-resource-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.default-thumbnail {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 50px;
+}
+
+
+/* ========================================
+   RESOURCE CONTENT
+======================================== */
+
+.my-resource-content {
+  padding: 20px;
+}
+
+.my-resource-category {
+  display: inline-block;
+
+  margin-bottom: 8px;
+  padding: 5px 10px;
+
+  border-radius: 6px;
+
+  background: var(--primary-light);
+  color: var(--primary);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.my-resource-content h3 {
+  margin: 0 0 8px;
+
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.my-resource-content > p {
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* ========================================
+   RESOURCE FOOTER
+======================================== */
+
+.my-resource-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-top: 18px;
+  padding-top: 15px;
+
+  border-top: 1px solid var(--border);
+}
+
+.my-resource-footer > span {
+  color: var(--text-muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+
+/* ========================================
+   RESOURCE ACTIONS
+======================================== */
+
+.resource-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.resource-view-btn,
+.resource-edit-btn,
+.resource-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 32px;
+  padding: 0 9px;
+
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+/* View */
+
+.resource-view-btn {
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--text-secondary);
+}
+
+.resource-view-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+
+/* Edit */
+
+.resource-edit-btn {
+  border: 1px solid #bfdbfe;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.resource-edit-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+
+/* Delete */
+
+.resource-delete-btn {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.resource-delete-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.my-resources-empty {
+  padding: 55px 20px;
+
+  background: var(--background);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 12px;
+  font-size: 42px;
+}
+
+.my-resources-empty h3 {
+  margin: 0 0 7px;
+
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.my-resources-empty p {
+  margin: 0 0 20px;
+
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+
+/* ========================================
+   PRIMARY BUTTON
+======================================== */
+
+.profile-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  background: var(--primary);
+  color: #ffffff;
+
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: background 0.2s ease;
+}
+
+.profile-primary-btn:hover {
+  background: var(--primary-dark);
+}
+
+
+/* ========================================
+   LOADING
+======================================== */
+
+.profile-loading,
+.resources-loading {
+  padding: 50px 20px;
+
+  color: var(--text-secondary);
+  text-align: center;
+
+  font-size: 14px;
+}
+
+.profile-loading {
+  min-height: 50vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ========================================
+   PROFILE EMPTY
+======================================== */
+
+.profile-empty {
+  min-height: 60vh;
+  padding: 60px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.profile-empty h2 {
+  margin: 0 0 8px;
+
+  color: var(--text);
+  font-size: 24px;
+}
+
+.profile-empty p {
+  margin: 0 0 22px;
+
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 900px) {
+  .my-resources-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .profile-card {
+    padding: 26px;
+  }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 30px 15px 50px;
+  }
+
+  .profile-card {
+    padding: 22px;
+
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .profile-info {
+    gap: 15px;
+  }
+
+  .profile-avatar {
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+
+    font-size: 28px;
+  }
+
+  .profile-details h1 {
+    font-size: 21px;
+  }
+
+  .profile-details p {
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .profile-card-actions {
+    width: 100%;
+  }
+
+  .edit-profile-btn {
+    width: 100%;
+  }
+
+  /* Upload button remains outside card */
+  .upload-resource-section {
+    justify-content: stretch;
+    margin-top: 16px;
+  }
+
+  .upload-resource-btn {
+    width: 100%;
+  }
+
+  .my-resources {
+    margin-top: 35px;
+  }
+
+  .my-resources-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .my-resources-header h2 {
+    font-size: 21px;
+  }
+
+  .resource-count {
+    font-size: 11px;
+  }
+
+  .my-resources-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .my-resource-thumbnail {
+    height: 180px;
+  }
+
+  .my-resource-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .resource-actions {
+    width: 100%;
+  }
+
+  .resource-view-btn,
+  .resource-edit-btn,
+  .resource-delete-btn {
+    flex: 1;
+  }
+}
