@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import {
   IoArrowForward,
@@ -12,6 +14,20 @@ import { HiOutlineUpload } from "react-icons/hi";
 import "../styles/Home.css";
 
 function Home() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleUploadClick = (e) => {
+    if (e) e.preventDefault();
+
+    if (user) {
+      navigate("/upload");
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
   return (
     <div className="home">
 
@@ -45,7 +61,12 @@ function Home() {
 
           {/* Hero Card */}
 
-          <div className="hero-card">
+          <div
+            className="hero-card clickable"
+            onClick={handleUploadClick}
+            title="Click to upload resource"
+            style={{ cursor: "pointer" }}
+          >
 
             <div className="hero-card-icon">
               <HiOutlineUpload />
@@ -109,9 +130,24 @@ function Home() {
               educational materials.
             </p>
 
-            <Link to="/upload">
-              Learn More <IoArrowForward />
-            </Link>
+            <button
+              onClick={handleUploadClick}
+              className="feature-action-btn"
+              style={{
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
+                color: "var(--primary)",
+                fontSize: "11px",
+                fontWeight: "600"
+              }}
+            >
+              Upload Now <IoArrowForward />
+            </button>
 
           </div>
 
@@ -214,6 +250,45 @@ function Home() {
         </div>
 
       </section>
+
+
+      {/* ================= AUTH MODAL ================= */}
+
+      {showAuthModal && (
+        <div className="modal-backdrop" onClick={() => setShowAuthModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon">
+              <HiOutlineUpload />
+            </div>
+            <h3>Sign In Required</h3>
+            <p>You need to be logged in to upload resources to ResourceShare.</p>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="modal-cancel-btn"
+                onClick={() => setShowAuthModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="modal-signin-btn"
+                onClick={() => {
+                  setShowAuthModal(false);
+                  navigate("/signin", {
+                    state: {
+                      message: "Please sign in first to upload resources",
+                      redirectAfterLogin: "/upload",
+                    },
+                  });
+                }}
+              >
+                Sign In to Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

@@ -71,8 +71,22 @@ const getDefaultThumbnailFile = async (file) => {
 };
 
 
+import { useAuth } from "../context/AuthContext";
+
 function Upload() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/signin", {
+        state: {
+          message: "Please sign in first to upload resources",
+          redirectAfterLogin: "/upload",
+        },
+      });
+    }
+  }, [user, authLoading, navigate]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -208,14 +222,18 @@ function Upload() {
       // Thumbnail
       if (thumbnail) {
         data.append("thumbnail", thumbnail);
+      } else if (file && file.type && file.type.startsWith("image/")) {
+        data.append("thumbnail", file);
       } else {
-        const defaultThumbnail =
-          await getDefaultThumbnailFile(file);
-
-        data.append(
-          "thumbnail",
-          defaultThumbnail
-        );
+        try {
+          const defaultThumbnail =
+            await getDefaultThumbnailFile(file);
+          if (defaultThumbnail) {
+            data.append("thumbnail", defaultThumbnail);
+          }
+        } catch (e) {
+          console.warn("Could not load default thumbnail:", e);
+        }
       }
 
 

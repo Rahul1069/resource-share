@@ -69,6 +69,11 @@ const createResource = async (req, res) => {
       if (thumbnailUpload) {
         thumbnailUrl = thumbnailUpload.url;
       }
+    } else if (
+      resourceFile.mimetype?.startsWith("image/") ||
+      /\.(jpg|jpeg|png|gif|webp)$/i.test(resourceFile.originalname || "")
+    ) {
+      thumbnailUrl = resourceUpload.url;
     }
 
     // Create resource
