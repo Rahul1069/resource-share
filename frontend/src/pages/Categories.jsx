@@ -56,7 +56,7 @@ function Categories() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:3000/api/categories"
+        "https://resource-share.onrender.com/api/categories"
       );
 
       const data = await response.json();

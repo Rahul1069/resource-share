@@ -8,7 +8,7 @@ import {
 import { IoSearch } from "react-icons/io5";
 import "../styles/Search.css";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "https://resource-share.onrender.com";
 
 function Search() {
   const [query, setQuery] = useState("");

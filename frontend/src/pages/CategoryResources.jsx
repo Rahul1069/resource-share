@@ -27,7 +27,7 @@ function CategoryResources() {
       setError("");
 
       const response = await fetch(
-        `http://localhost:3000/api/categories/${id}/resources`
+        `https://resource-share.onrender.com/api/categories/${id}/resources`
       );
 
       const data = await response.json();
@@ -73,7 +73,7 @@ function CategoryResources() {
   const fetchCategory = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/categories/${id}`
+        `https://resource-share.onrender.com/api/categories/${id}`
       );
 
       const data = await response.json();
