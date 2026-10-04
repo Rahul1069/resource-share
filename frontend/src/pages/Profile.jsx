@@ -19,6 +19,39 @@ function Profile() {
     fetchMyResources();
   }, []);
 
+  const [removingPhoto, setRemovingPhoto] = useState(false);
+  const [expandedDesc, setExpandedDesc] = useState({});
+
+  const toggleDesc = (id) => {
+    setExpandedDesc((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleRemovePhoto = async () => {
+    if (!window.confirm("Are you sure you want to remove your profile picture?")) {
+      return;
+    }
+
+    try {
+      setRemovingPhoto(true);
+      const data = new FormData();
+      data.append("remove_image", "true");
+
+      const response = await api.put("/users/profile", data);
+      const updatedUser =
+        response.data?.data ||
+        response.data?.user ||
+        response.data;
+
+      setProfile(updatedUser);
+      setUser(updatedUser);
+    } catch (err) {
+      console.error("Remove photo error:", err);
+      alert(err.response?.data?.message || "Failed to remove photo.");
+    } finally {
+      setRemovingPhoto(false);
+    }
+  };
+
   // =========================
   // FETCH PROFILE
   // =========================
@@ -179,7 +212,7 @@ function Profile() {
 
           </div>
 
-          {/* Edit Profile - INSIDE CARD */}
+          {/* Profile Actions */}
           <div className="profile-card-actions">
             <Link
               to="/profile/edit"
@@ -187,6 +220,18 @@ function Profile() {
             >
               Edit Profile
             </Link>
+
+            {currentProfile?.profile_image && (
+              <button
+                type="button"
+                className="remove-photo-profile-btn"
+                onClick={handleRemovePhoto}
+                disabled={removingPhoto}
+                title="Remove profile image"
+              >
+                {removingPhoto ? "Removing..." : "Remove Photo"}
+              </button>
+            )}
           </div>
 
         </section>
@@ -310,9 +355,31 @@ function Profile() {
                         {resource.title}
                       </h3>
 
-                      <p>
-                        {resource.description}
+                      <p className={`my-resource-desc ${!expandedDesc[resourceId] && resource.description?.length > 95 ? "clamped" : ""}`}>
+                        {!expandedDesc[resourceId] && resource.description?.length > 95
+                          ? `${resource.description.slice(0, 95)}...`
+                          : resource.description}
                       </p>
+
+                      {resource.description?.length > 95 && (
+                        <button
+                          type="button"
+                          className="desc-toggle-btn"
+                          onClick={() => toggleDesc(resourceId)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            padding: "4px 0",
+                            color: "var(--primary, #2563eb)",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            cursor: "pointer",
+                            marginBottom: "10px",
+                          }}
+                        >
+                          {expandedDesc[resourceId] ? "Show Less ↑" : "Show More ↓"}
+                        </button>
+                      )}
 
 
                       {/* Footer */}

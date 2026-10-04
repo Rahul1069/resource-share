@@ -1,40 +1,33 @@
-import { useState } from "react";
-import {
-  FaBook,
-  FaDownload,
-  FaExternalLinkAlt,
-  FaTimes,
-} from "../utils/icons";
+import { useState, useRef, useEffect } from "react";
+import { FaBook, FaTimes } from "../utils/icons";
 import { IoSearch } from "react-icons/io5";
+import ResourceCard from "../components/ResourceCard";
+import UploaderProfileModal from "../components/UploaderProfileModal";
+import ChatModal from "../components/ChatModal";
+import { downloadResourceFile } from "../utils/downloadHelper";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 import "../styles/Search.css";
 
-const API_URL = "https://resource-share.onrender.com";
-
 function Search() {
+  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const [resources, setResources] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
 
-  // Get user initials for avatar fallback
-  const getUserInitials = (name) => {
-    if (!name) return "?";
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
+  // Modals state
+  const [selectedUploader, setSelectedUploader] = useState(null);
+  const [chatUploader, setChatUploader] = useState(null);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
+  const debounceTimer = useRef(null);
 
-    if (!query.trim()) {
-      setError("Please enter something to search.");
+  const performSearch = async (searchTerm) => {
+    if (!searchTerm || !searchTerm.trim()) {
       setResources([]);
       setSearched(false);
+      setLoading(false);
       return;
     }
 
@@ -43,81 +36,124 @@ function Search() {
       setError("");
       setSearched(true);
 
-      const response = await fetch(
-        `${API_URL}/api/resources/search?q=${encodeURIComponent(
-          query.trim()
-        )}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
+      const response = await api.get(
+        `/resources/search?q=${encodeURIComponent(searchTerm.trim())}`
       );
 
-      const data = await response.json();
+      console.log("SEARCH RESPONSE:", response.data);
 
-      console.log("SEARCH RESPONSE:", data);
-
-      if (!response.ok) {
-        throw new Error(
-          data.message || "Search request failed"
-        );
-      }
-
-      // Backend returns { success: true, resources: [...] }
+      const data = response.data;
       setResources(data.resources || []);
-    } catch (error) {
-      console.error("Search error:", error);
-
+    } catch (err) {
+      console.error("Search error:", err);
       setResources([]);
       setError(
-        error.message || "Unable to search resources."
+        err.response?.data?.message || err.message || "Unable to search resources."
       );
     } finally {
       setLoading(false);
     }
   };
 
+  // Requirement 1: Use onChange in search bar instead of search button
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    setError("");
+
+    if (!val.trim()) {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      setResources([]);
+      setSearched(false);
+      setLoading(false);
+      return;
+    }
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      performSearch(val);
+    }, 350);
+  };
+
   const handleClear = () => {
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
     setQuery("");
     setResources([]);
     setSearched(false);
     setError("");
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    performSearch(query);
+  };
+
+  // Requirement 4: download button & increment count
+  const handleDownload = async (resource) => {
+    const resourceId = resource._id || resource.id;
+
+    // Increment count in UI immediately
+    setResources((prev) =>
+      prev.map((r) =>
+        (r._id || r.id) === resourceId
+          ? { ...r, downloads: (r.downloads || 0) + 1 }
+          : r
+      )
+    );
+
+    // Call helper to hit backend and trigger file download
+    await downloadResourceFile(resource);
+  };
+
+  // Requirement 3: uploader profile & chat
+  const handleOpenUploader = (uploaderUser, resource) => {
+    setSelectedUploader({
+      uploader: uploaderUser,
+      resource,
+    });
+  };
+
+  const handleStartChat = (uploaderUser) => {
+    setSelectedUploader(null);
+    setChatUploader(uploaderUser);
+  };
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, []);
+
   return (
     <div className="search-page">
       <div className="search-container">
-
         {/* Header */}
         <div className="search-header">
           <h1>Search Resources</h1>
-
           <p>
-            Find notes, study materials, projects,
-            question papers and more by title,
+            Find notes, study materials, projects, question papers and more by title,
             description, or uploader name.
           </p>
         </div>
 
-        {/* Search Form */}
-        <form
-          className="search-form"
-          onSubmit={handleSearch}
-        >
+        {/* Search Form without search button (triggers on change) */}
+        <form className="search-form" onSubmit={handleFormSubmit}>
           <div className="search-input-wrapper">
-
             <span className="search-icon">
               <IoSearch />
             </span>
 
             <input
               type="text"
-              placeholder="Search by title, description or user name..."
+              placeholder="Search live by title, description or uploader name..."
               value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setError("");
-              }}
+              onChange={handleInputChange}
+              autoFocus
             />
 
             {query && (
@@ -126,206 +162,97 @@ function Search() {
                 className="clear-btn"
                 onClick={handleClear}
                 aria-label="Clear search"
+                title="Clear"
               >
                 <FaTimes />
               </button>
             )}
           </div>
-
-          <button
-            type="submit"
-            className="search-btn"
-            disabled={loading}
-          >
-            {loading ? "Searching..." : "Search"}
-          </button>
         </form>
 
         {/* Error */}
-        {error && (
-          <div className="search-error">
-            {error}
-          </div>
-        )}
+        {error && <div className="search-error">{error}</div>}
 
-        {/* Loading */}
+        {/* Loading Indicator */}
         {loading && (
           <div className="search-status">
             <div className="loader"></div>
-
-            <p>
-              Searching resources...
-            </p>
+            <p>Searching resources...</p>
           </div>
         )}
 
         {/* Search Results */}
-        {!loading &&
-          searched &&
-          resources.length > 0 && (
-            <div className="results-section">
-
-              <div className="results-heading">
-                <h2>Search Results</h2>
-
-                <span>
-                  {resources.length}{" "}
-                  {resources.length === 1
-                    ? "resource"
-                    : "resources"}{" "}
-                  found
-                </span>
-              </div>
-
-              <div className="resource-grid">
-
-                {resources.map((resource) => (
-                  <div
-                    className="resource-card"
-                    key={resource._id}
-                  >
-
-                    {/* Thumbnail */}
-                    <div className="resource-thumbnail">
-
-                      {resource.thumbnail_url ? (
-                        <img
-                          src={resource.thumbnail_url}
-                          alt={resource.title}
-                        />
-                      ) : (
-                        <div className="thumbnail-placeholder">
-                          <FaBook />
-                        </div>
-                      )}
-
-                    </div>
-
-                    {/* Content */}
-                    <div className="resource-content">
-
-                      <h3>
-                        {resource.title}
-                      </h3>
-
-                      <p className="resource-description">
-                        {resource.description}
-                      </p>
-
-                      {/* User Info */}
-                      {resource.user_id &&
-                        typeof resource.user_id === "object" && (
-                          <div className="resource-user">
-                            {resource.user_id.profile_image ? (
-                              <img
-                                src={resource.user_id.profile_image}
-                                alt={resource.user_id.name || "User"}
-                                className="resource-user-avatar"
-                              />
-                            ) : (
-                              <div className="resource-user-initials">
-                                {getUserInitials(resource.user_id.name)}
-                              </div>
-                            )}
-                            <span className="resource-user-name">
-                              {resource.user_id.name || "Unknown User"}
-                            </span>
-                          </div>
-                        )}
-
-                      {/* Category */}
-                      {resource.category_id?.name && (
-                        <span className="resource-category">
-                          {resource.category_id.name}
-                        </span>
-                      )}
-
-                      {/* Footer */}
-                      <div className="resource-footer">
-
-                        <span className="download-count">
-                          <FaDownload className="download-icon" />
-                          {resource.downloads || 0}
-                        </span>
-
-                        {resource.file_url && (
-                          <a
-                            href={resource.file_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="view-btn"
-                          >
-                            View <FaExternalLinkAlt className="view-icon" />
-                          </a>
-                        )}
-
-                      </div>
-
-                    </div>
-
-                  </div>
-                ))}
-
-              </div>
+        {!loading && searched && resources.length > 0 && (
+          <div className="results-section">
+            <div className="results-heading">
+              <h2>Search Results</h2>
+              <span>
+                {resources.length} {resources.length === 1 ? "resource" : "resources"} found
+              </span>
             </div>
-          )}
+
+            <div className="resource-grid">
+              {resources.map((resource) => (
+                <ResourceCard
+                  key={resource._id || resource.id}
+                  resource={resource}
+                  onDownload={handleDownload}
+                  onOpenUploader={handleOpenUploader}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* No Results */}
-        {!loading &&
-          searched &&
-          resources.length === 0 &&
-          !error && (
-            <div className="no-results">
-
-              <div className="no-results-icon">
-                <IoSearch />
-              </div>
-
-              <h2>
-                No resources found
-              </h2>
-
-              <p>
-                We couldn't find any resources
-                matching{" "}
-                <strong>
-                  "{query}"
-                </strong>
-                .
-              </p>
-
-              <span>
-                Try searching with a different
-                keyword or user name.
-              </span>
-
+        {!loading && searched && resources.length === 0 && !error && (
+          <div className="no-results">
+            <div className="no-results-icon">
+              <IoSearch />
             </div>
-          )}
 
-        {/* Initial State */}
+            <h2>No resources found</h2>
+            <p>
+              We couldn't find any resources matching <strong>"{query}"</strong>.
+            </p>
+            <span>Try searching with a different keyword or user name.</span>
+          </div>
+        )}
+
+        {/* Initial Empty State */}
         {!searched && !loading && (
           <div className="search-empty">
-
             <div className="search-empty-icon">
               <FaBook />
             </div>
 
-            <h2>
-              Discover Learning Resources
-            </h2>
-
+            <h2>Discover Learning Resources</h2>
             <p>
-              Search for programming notes,
-              projects, presentations, question
-              papers, e-books and other study
-              materials by title, description or
-              uploader name.
+              Start typing above to instantly search for programming notes, projects,
+              presentations, question papers, and other study materials.
             </p>
-
           </div>
         )}
-
       </div>
+
+      {/* Uploader Profile Modal (Requirement 3) */}
+      {selectedUploader && (
+        <UploaderProfileModal
+          uploader={selectedUploader.uploader}
+          currentResource={selectedUploader.resource}
+          onClose={() => setSelectedUploader(null)}
+          onStartChat={handleStartChat}
+        />
+      )}
+
+      {/* Chat with Uploader Modal (Requirement 3) */}
+      {chatUploader && (
+        <ChatModal
+          uploader={chatUploader}
+          currentUser={user}
+          onClose={() => setChatUploader(null)}
+        />
+      )}
     </div>
   );
 }

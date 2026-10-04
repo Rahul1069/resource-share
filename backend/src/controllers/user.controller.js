@@ -67,6 +67,16 @@ const updateProfile = async (req, res) => {
       user.email = email.toLowerCase().trim();
     }
 
+    // Remove profile image if requested
+    if (
+      req.body.remove_image === "true" ||
+      req.body.removeImage === "true" ||
+      req.body.remove_image === true ||
+      req.body.removeImage === true
+    ) {
+      user.profile_image = "";
+    }
+
     // Update profile image
     if (req.file) {
       const cloudinaryResponse = await uploadOnImageKit(
@@ -108,7 +118,44 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// GET /api/users/:id - Public user profile with resources
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findById(id).select(
+      "-password -refreshToken"
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Also get resources uploaded by this user
+    const { Resource } = await import("../models/resource.model.js");
+    const resources = await Resource.find({ user_id: id })
+      .populate("category_id", "name description")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      user,
+      resources,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch user profile",
+      error: error.message,
+    });
+  }
+};
+
 export {
   getProfile,
   updateProfile,
+  getUserById,
 };

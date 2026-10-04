@@ -23,17 +23,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
 }
 
 
 /* ================================
-   LOGO
+   LOGO & BRAND
 ================================ */
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
 
 .logo {
   display: flex;
   align-items: center;
-
+  gap: 12px;
   text-decoration: none;
 }
 
@@ -50,10 +57,23 @@
 
   border-radius: 10px;
 
-  font-size: 25px;
+  font-size: 24px;
   font-weight: 800;
 
   transition: 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.logo-brand-text {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  transition: 0.2s ease;
+}
+
+.logo-brand-highlight {
+  color: var(--primary);
 }
 
 .logo:hover .logo-icon {
@@ -61,15 +81,21 @@
   transform: translateY(-1px);
 }
 
+.logo:hover .logo-brand-text {
+  color: var(--primary);
+}
+
 
 /* ================================
-   DESKTOP NAVIGATION
+   DESKTOP NAVIGATION (TABS)
 ================================ */
 
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 25px;
+  justify-content: center;
+  gap: 24px;
+  margin: 0 auto;
 }
 
 .nav-link {
@@ -77,10 +103,11 @@
 
   color: var(--text-secondary);
 
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
 
   text-decoration: none;
+  padding: 6px 4px;
 
   transition: 0.2s ease;
 }
@@ -94,16 +121,42 @@
   font-weight: 600;
 }
 
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
 
 /* ================================
-   AUTH BUTTON CONTAINER
+   HEADER ACTIONS & AUTH BUTTONS
 ================================ */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
 
 .auth-buttons {
   display: flex;
   align-items: center;
-
   gap: 10px;
+}
+
+.header-avatar-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 6px;
+  border: 1.5px solid var(--primary);
 }
 
 
@@ -356,10 +409,11 @@
     padding: 0 20px;
   }
 
-  /* Hide desktop navigation */
+  /* Hide desktop navigation and actions */
   .desktop-nav,
-  .auth-buttons {
-    display: none;
+  .auth-buttons,
+  .header-actions {
+    display: none !important;
   }
 
   /* Show menu button */

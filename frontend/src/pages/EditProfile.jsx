@@ -15,6 +15,7 @@ function EditProfile() {
 
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
+  const [removeImage, setRemoveImage] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -43,6 +44,7 @@ function EditProfile() {
       });
 
       setPreviewImage(userData?.profile_image || "");
+      setRemoveImage(false);
 
     } catch (error) {
       console.error("Profile error:", error);
@@ -94,6 +96,7 @@ function EditProfile() {
 
     setProfileImage(file);
     setPreviewImage(URL.createObjectURL(file));
+    setRemoveImage(false);
 
     setError("");
     setSuccess("");
@@ -105,6 +108,7 @@ function EditProfile() {
   const handleRemoveImage = () => {
     setProfileImage(null);
     setPreviewImage("");
+    setRemoveImage(true);
 
     setError("");
     setSuccess("");
@@ -132,6 +136,8 @@ function EditProfile() {
 
     if (profileImage) {
       data.append("profile_image", profileImage);
+    } else if (removeImage) {
+      data.append("remove_image", "true");
     }
 
     const response = await api.put(

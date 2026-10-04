@@ -6,6 +6,8 @@ export {
   FaGlobe,
   FaFilePdf,
   FaDownload,
+  FaChevronDown,
+  FaChevronUp,
 } from "react-icons/fa";
 
 

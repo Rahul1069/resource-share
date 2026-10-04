@@ -34,22 +34,23 @@ function Header() {
 
       <div className="header-container">
 
-        {/* Logo */}
+        {/* Logo / Brand */}
+        <div className="header-brand">
+          <Link
+            to="/"
+            className="logo"
+          >
+            <span className="logo-icon">
+              R
+            </span>
+            <span className="logo-brand-text">
+              Resource<span className="logo-brand-highlight">Share</span>
+            </span>
+          </Link>
+        </div>
 
-        <Link
-          to="/"
-          className="logo"
-        >
-          <span className="logo-icon">
-            R
-          </span>
-        </Link>
-
-
-        {/* Desktop Navigation */}
-
+        {/* Desktop Navigation Tabs */}
         <nav className="desktop-nav">
-
           <NavLink
             to="/"
             className="nav-link"
@@ -98,13 +99,12 @@ function Header() {
           >
             Contact
           </NavLink>
+        </nav>
 
-
-          {/* Authentication */}
-
+        {/* Header Actions / Auth Buttons */}
+        <div className="header-actions">
           {!loading && !user && (
             <div className="auth-buttons">
-
               <Link
                 to="/signin"
                 className="signin-btn"
@@ -118,21 +118,23 @@ function Header() {
               >
                 Sign Up
               </Link>
-
             </div>
           )}
 
-
-          {/* Logged In */}
-
           {!loading && user && (
             <div className="auth-buttons">
-
               <Link
                 to="/profile"
                 className="profile-btn"
               >
-                Profile
+                {user.profile_image ? (
+                  <img
+                    src={user.profile_image}
+                    alt={user.name || "Profile"}
+                    className="header-avatar-thumb"
+                  />
+                ) : null}
+                <span>Profile</span>
               </Link>
 
               <button
@@ -141,11 +143,9 @@ function Header() {
               >
                 Logout
               </button>
-
             </div>
           )}
-
-        </nav>
+        </div>
 
 
         {/* Mobile Menu Button */}

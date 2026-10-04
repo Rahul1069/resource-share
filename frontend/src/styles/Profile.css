@@ -114,9 +114,39 @@
 }
 
 .edit-profile-btn:hover {
-  background: var(--primary);
-  color: #ffffff;
+  background: var(--primary-light);
+  transform: translateY(-1px);
 }
+
+.remove-photo-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 10px;
+}
+
+.remove-photo-profile-btn:hover:not(:disabled) {
+  background: #fca5a5;
+  color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+.remove-photo-profile-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+
 
 
 /* ========================================

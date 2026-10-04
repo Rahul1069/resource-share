@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   getProfile,
   updateProfile,
+  getUserById,
 } from "../controllers/user.controller.js";
 
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -25,6 +26,12 @@ router.put(
   verifyJWT,
   upload.single("profile_image"),
   updateProfile
+);
+
+// GET public user profile by ID
+router.get(
+  "/:id",
+  getUserById
 );
 
 

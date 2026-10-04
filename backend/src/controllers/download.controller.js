@@ -6,7 +6,7 @@ import { Resource } from "../models/resource.model.js";
 const downloadResource = async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user._id;
+    const userId = req.user?._id;
 
     // Check resource ID
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -26,26 +26,33 @@ const downloadResource = async (req, res) => {
       });
     }
 
-    // Record download
-    const download = await Download.create({
-      user_id: userId,
-      resource_id: id,
-    });
+    let downloadId = null;
+
+    // Record download if user is logged in
+    if (userId) {
+      const download = await Download.create({
+        user_id: userId,
+        resource_id: id,
+      });
+      downloadId = download._id;
+    }
 
     // Increase download count
-    await Resource.findByIdAndUpdate(
+    const updatedResource = await Resource.findByIdAndUpdate(
       id,
       {
         $inc: { downloads: 1 },
-      }
+      },
+      { new: true }
     );
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Resource download recorded",
       data: {
         file_url: resource.file_url,
-        download_id: download._id,
+        downloads: updatedResource ? updatedResource.downloads : (resource.downloads || 0) + 1,
+        download_id: downloadId,
       },
     });
   } catch (error) {
