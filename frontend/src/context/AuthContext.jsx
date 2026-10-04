@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import api from "../services/api";
+import api, { setAccessToken, getAccessToken, clearAccessToken } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -10,6 +10,15 @@ export function AuthProvider({ children }) {
   // Check login when application starts
   const checkAuth = async () => {
     try {
+      // If there's no saved token and cookies might be blocked, skip the
+      // network call to avoid a guaranteed 401 flash on every cold start.
+      const token = getAccessToken();
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       const response = await api.get("/users/profile");
 
       const userData =
@@ -19,6 +28,8 @@ export function AuthProvider({ children }) {
 
       setUser(userData);
     } catch (error) {
+      // Token was stale / expired – clear it
+      clearAccessToken();
       setUser(null);
     } finally {
       setLoading(false);
@@ -36,6 +47,12 @@ export function AuthProvider({ children }) {
       password,
     });
 
+    // Save the access token returned in the response body
+    const accessToken = response.data?.accessToken;
+    if (accessToken) {
+      setAccessToken(accessToken);
+    }
+
     const userData =
       response.data?.data ||
       response.data?.user ||
@@ -51,6 +68,7 @@ export function AuthProvider({ children }) {
     try {
       await api.post("/auth/logout");
     } finally {
+      clearAccessToken();
       setUser(null);
     }
   };

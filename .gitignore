@@ -30,6 +30,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Reports & Report Generation
+ResourceShare_Project_Report.*
+report_assets/
+generate_report_*.py
+generate_diagrams.py
+
 # System & IDE
 .DS_Store
 Thumbs.db
