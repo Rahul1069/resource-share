@@ -3,7 +3,6 @@ import api from "../services/api";
 import { FaBook } from "../utils/icons";
 import ResourceCard from "../components/ResourceCard";
 import UploaderProfileModal from "../components/UploaderProfileModal";
-import ChatModal from "../components/ChatModal";
 import { downloadResourceFile } from "../utils/downloadHelper";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Resources.css";
@@ -14,9 +13,8 @@ function Resources() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Modals
+  // Modal
   const [selectedUploader, setSelectedUploader] = useState(null);
-  const [chatUploader, setChatUploader] = useState(null);
 
   useEffect(() => {
     fetchResources();
@@ -60,7 +58,7 @@ function Resources() {
     }
   };
 
-  // Requirement 4: download button and download count increment
+  // Download button and download count increment
   const handleDownload = async (resource) => {
     const resourceId = resource._id || resource.id;
 
@@ -77,17 +75,12 @@ function Resources() {
     await downloadResourceFile(resource);
   };
 
-  // Requirement 3: Click uploader name/image to open profile and option to chat
+  // Click uploader name/image to open profile modal
   const handleOpenUploader = (uploaderUser, resource) => {
     setSelectedUploader({
       uploader: uploaderUser,
       resource,
     });
-  };
-
-  const handleStartChat = (uploaderUser) => {
-    setSelectedUploader(null);
-    setChatUploader(uploaderUser);
   };
 
   // Loading
@@ -181,22 +174,12 @@ function Resources() {
         )}
       </div>
 
-      {/* Uploader Profile Modal (Requirement 3) */}
+      {/* Uploader Profile Modal */}
       {selectedUploader && (
         <UploaderProfileModal
           uploader={selectedUploader.uploader}
           currentResource={selectedUploader.resource}
           onClose={() => setSelectedUploader(null)}
-          onStartChat={handleStartChat}
-        />
-      )}
-
-      {/* Chat with Uploader Modal (Requirement 3) */}
-      {chatUploader && (
-        <ChatModal
-          uploader={chatUploader}
-          currentUser={user}
-          onClose={() => setChatUploader(null)}
         />
       )}
     </main>

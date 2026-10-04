@@ -110,7 +110,7 @@ function ResourceCard({ resource, onDownload, onOpenUploader }) {
           <div
             className="resource-user-clickable"
             onClick={handleUploaderClick}
-            title={`View ${user.name || "user"}'s profile & chat`}
+            title={`View ${user.name || "user"}'s profile & resources`}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === "Enter" && handleUploaderClick(e)}
@@ -131,7 +131,7 @@ function ResourceCard({ resource, onDownload, onOpenUploader }) {
               <span className="resource-user-name">
                 {user.name || "Unknown User"}
               </span>
-              <span className="resource-user-role">Click to view & chat</span>
+              <span className="resource-user-role">Click to view profile</span>
             </div>
           </div>
         )}

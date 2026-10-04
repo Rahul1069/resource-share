@@ -3,7 +3,6 @@ import { FaBook, FaTimes } from "../utils/icons";
 import { IoSearch } from "react-icons/io5";
 import ResourceCard from "../components/ResourceCard";
 import UploaderProfileModal from "../components/UploaderProfileModal";
-import ChatModal from "../components/ChatModal";
 import { downloadResourceFile } from "../utils/downloadHelper";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -17,9 +16,8 @@ function Search() {
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
 
-  // Modals state
+  // Modal state
   const [selectedUploader, setSelectedUploader] = useState(null);
-  const [chatUploader, setChatUploader] = useState(null);
 
   const debounceTimer = useRef(null);
 
@@ -55,7 +53,7 @@ function Search() {
     }
   };
 
-  // Requirement 1: Use onChange in search bar instead of search button
+  // Use onChange in search bar instead of search button
   const handleInputChange = (e) => {
     const val = e.target.value;
     setQuery(val);
@@ -92,7 +90,7 @@ function Search() {
     performSearch(query);
   };
 
-  // Requirement 4: download button & increment count
+  // Download button & increment count
   const handleDownload = async (resource) => {
     const resourceId = resource._id || resource.id;
 
@@ -109,17 +107,12 @@ function Search() {
     await downloadResourceFile(resource);
   };
 
-  // Requirement 3: uploader profile & chat
+  // Uploader profile modal
   const handleOpenUploader = (uploaderUser, resource) => {
     setSelectedUploader({
       uploader: uploaderUser,
       resource,
     });
-  };
-
-  const handleStartChat = (uploaderUser) => {
-    setSelectedUploader(null);
-    setChatUploader(uploaderUser);
   };
 
   // Cleanup debounce timer on unmount
@@ -235,22 +228,12 @@ function Search() {
         )}
       </div>
 
-      {/* Uploader Profile Modal (Requirement 3) */}
+      {/* Uploader Profile Modal */}
       {selectedUploader && (
         <UploaderProfileModal
           uploader={selectedUploader.uploader}
           currentResource={selectedUploader.resource}
           onClose={() => setSelectedUploader(null)}
-          onStartChat={handleStartChat}
-        />
-      )}
-
-      {/* Chat with Uploader Modal (Requirement 3) */}
-      {chatUploader && (
-        <ChatModal
-          uploader={chatUploader}
-          currentUser={user}
-          onClose={() => setChatUploader(null)}
         />
       )}
     </div>
